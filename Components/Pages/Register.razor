@@ -1,0 +1,37 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+@using Registrar
+@inject NavigationManager Navigator
+
+<h3>Register Student</h3>
+
+<EditForm Model="Student">
+    <h4>@Student?.FirstName</h4>
+    <p>The following courses are currently available for registration:</p>
+    @foreach(var course in courses){
+        <div>
+            <label>
+                <InputCheckbox @bind-Value="course!.isEnrolled" />
+                @course.Code @course.Title @course.WeeklyHours hours per week
+            </label>
+        </div>
+    }
+
+    <button type="submit">Submit</button>
+    <button type="button" @onclick="Cancel">Cancel</button>
+
+</EditForm>
+
+
+@code {
+
+    [SupplyParameterFromForm] 
+    public Student Student { get; set; } =new();
+
+   
+    public List<Course> courses = Helper.GetCourses();
+    private void Cancel()
+    {
+        Navigator.NavigateTo("/");
+    }
+}

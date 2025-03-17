@@ -1,0 +1,43 @@
+﻿@page "/addstudent"
+@rendermode InteractiveServer
+@using Registrar
+@inject NavigationManager Navigator
+
+<PageTitle>Add Student</PageTitle>
+
+<section class="container-fluid">
+	<EditForm>
+		<h1>Add Student</h1>
+		<div class="form-group">
+			<label for="firstname">First Name</label>
+			<input type="text" id="firstname" class="form-control" placeholder="First Name"/>
+		</div>
+		<div class="form-group">
+			<label for="lastname">Last Name</label>
+			<input type="text" id="lastname" class="form-control" placeholder="Last Name"/>
+		</div>
+		<div class="form-group">
+			<label for="studenttype">Student Type</label>
+			<select class="form-control" id="studenttype">
+				<option selected>Select a Student Type</option>
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+		</div>
+		<div class="form-group mt-3">
+			<a class="btn btn-primary">Add Student</a>
+			<a @onclick="NavigateToStudents" class="btn btn-danger">Cancel</a>
+		</div>
+	</EditForm>>
+</section>
+@code {
+	Student student = new Student();
+	//TODO: get student types and for each them in the above select for options
+	public void NavigateToStudents()
+	{
+		Navigator.NavigateTo("/");
+	}
+}

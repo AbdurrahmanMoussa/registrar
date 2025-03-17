@@ -1,0 +1,52 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using Registrar
+@inject NavigationManager Navigator
+<PageTitle>Students</PageTitle>
+<main class="m-5">
+	<header class="d-flex justify-content-between">
+		<h3>Students</h3>
+		<a @onclick="NavigateToAddStudent" class="align-content-end btn btn-primary rounded-1">+</a>
+	</header>
+
+	<section class="d-flex">
+
+		<table class="table align-content-center border-5">
+			<thead>
+				<tr class="student-table">
+					<th>id</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Type</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var student in students) 
+				{
+					<tr>
+						<td>@student.Id</td>
+						<td>@student.FirstName</td>
+						<td>@student.LastName</td>
+						<td>@student.Type</td>
+						<td><button @onclick="NavigateToRegister" class="border-0 bg-white btn-outline-info">Register</button></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</section>
+</main>
+@code {
+	//use try catch to check for null students here before assigning
+	List<Student> students = Helper.GetStudents();
+
+	private void NavigateToRegister()
+	{
+		Navigator.NavigateTo("/register");
+	}
+	private void NavigateToAddStudent()
+	{
+		Navigator.NavigateTo("addstudent");
+	}
+
+}
