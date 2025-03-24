@@ -1,34 +1,48 @@
-﻿@page "/register"
+﻿@page "/register/{id:int}"
 @rendermode InteractiveServer
 @using Registrar
 @inject NavigationManager Navigator
 
 <h3>Register Student</h3>
 
-<EditForm Model="Student">
-    <h4>@Student?.FirstName</h4>
-    <p>The following courses are currently available for registration:</p>
-    @foreach(var course in courses){
-        <div>
-            <label>
-                <InputCheckbox @bind-Value="course!.isEnrolled" />
-                @course.Code @course.Title @course.WeeklyHours hours per week
-            </label>
-        </div>
+<section class="container-fluid">
+    @if(redirectToStudents){
+        Navigator.NavigateTo("/");
     }
+        <EditForm Model="selectedStudent">
+            <h4>@selectedStudent?.FirstName @selectedStudent?.Id</h4>
+            <p>The following courses are currently available for registration:</p>
+            @foreach(var course in courses){
+                <div class="form-group">
+                    <label>
+                        <InputCheckbox id="@course.Code" @bind-Value="course!.isEnrolled" class="form-check-input" />
+                        @course.Code @course.Title @course.WeeklyHours - hours per week
+                    </label>
+                </div>
+            }
+            <div class="form-group my-3">
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
+            </div>
 
-    <button type="submit">Submit</button>
-    <button type="button" @onclick="Cancel">Cancel</button>
-
-</EditForm>
-
+        </EditForm>
+</section>
 
 @code {
 
-    [SupplyParameterFromForm] 
-    public Student Student { get; set; } =new();
+    [Parameter] public int Id { get; set; }
+    private Student? selectedStudent;
+    private bool redirectToStudents = false;
 
-   
+    protected override void OnInitialized(){
+        try
+        {
+            selectedStudent = Helper.InitialStudents.First(s => s.Id == Id);
+        }catch(Exception){
+            redirectToStudents = true;
+        }
+
+    }
     public List<Course> courses = Helper.GetCourses();
     private void Cancel()
     {

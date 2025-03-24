@@ -29,7 +29,7 @@
 						<td>@student.FirstName</td>
 						<td>@student.LastName</td>
 						<td>@student.Type</td>
-						<td><button @onclick="NavigateToRegister" class="border-0 bg-white btn-outline-info">Register</button></td>
+						<td><button @onclick="()=>RegisterStudent(student.Id)" class="border-0 bg-white btn-outline-info">Register</button></td>
 					</tr>
 				}
 			</tbody>
@@ -38,11 +38,11 @@
 </main>
 @code {
 	//use try catch to check for null students here before assigning
-	List<Student> students = Helper.GetStudents();
+	List<Student> students = Helper.InitialStudents;
 
-	private void NavigateToRegister()
+	private void RegisterStudent(int studentId)
 	{
-		Navigator.NavigateTo("/register");
+		Navigator.NavigateTo($"/register/{studentId}");
 	}
 	private void NavigateToAddStudent()
 	{
