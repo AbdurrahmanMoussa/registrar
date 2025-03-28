@@ -11,12 +11,12 @@
 
 	<section class="d-flex">
 
-		<table class="table align-content-center border-5">
+		<table class="table table-hover align-content-center border-5">
 			<thead>
 				<tr class="student-table">
 					<th>id</th>
-					<th>First Name</th>
 					<th>Last Name</th>
+					<th>First Name</th>
 					<th>Type</th>
 					<th>Action</th>
 				</tr>
@@ -26,10 +26,10 @@
 				{
 					<tr>
 						<td>@student.Id</td>
-						<td>@student.FirstName</td>
 						<td>@student.LastName</td>
+						<td>@student.FirstName</td>
 						<td>@student.Type</td>
-						<td><button @onclick="()=>RegisterStudent(student.Id)" class="border-0 bg-white btn-outline-info">Register</button></td>
+						<td><button @onclick="()=>RegisterStudent(student.Id)" class="border-0 btn-primary color-white rounded-1">Register</button></td>
 					</tr>
 				}
 			</tbody>
@@ -37,7 +37,7 @@
 	</section>
 </main>
 @code {
-	//use try catch to check for null students here before assigning
+	//TODO: use try catch to check for null students here before assigning
 	List<Student> students = Helper.InitialStudents;
 
 	private void RegisterStudent(int studentId)

@@ -1,0 +1,34 @@
+﻿@using Registrar
+<h3>StudentForm</h3>
+	<EditForm Model="NewStudent">
+		<h1>Add Student</h1>
+		<div class="form-group">
+			<label for="firstname">First Name</label>
+			<input type="text" id="firstname" class="form-control" placeholder="First Name" @bind="NewStudent.FirstName" />
+		</div>
+		<div class="form-group">
+			<label for="lastname">Last Name</label>
+			<input type="text" id="lastname" class="form-control" placeholder="Last Name" @bind="NewStudent.LastName" />
+		</div>
+		<div class="form-group">
+			<label for="studenttype">Student Type</label>
+			<select class="form-control" id="studenttype" @bind="NewStudent.Type">
+				<option disabled selected value="">Select a Student Type</option>
+				@foreach (var type in StudentTypes)
+				{
+					<option value="@type">@type</option>
+				}
+
+			</select>
+		</div>
+		<div class="form-group mt-3">
+			<button type="button" class="btn btn-primary" @onSubmit">Add Student</button>
+			<button type="button" @onclick="@OnCancel" class="btn btn-danger">Cancel</button>
+		</div>
+	</EditForm>
+@code {
+	[Parameter] public Student NewStudent { get; set; } = new();
+	[Parameter] public EventCallback OnSubmit { get; set; }
+	[Parameter] public EventCallback OnCancel { get; set; }
+	[Parameter] public List<string> StudentTypes { get; set; } = new();
+}

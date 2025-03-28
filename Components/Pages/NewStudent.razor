@@ -4,34 +4,10 @@
 @inject NavigationManager Navigator
 
 <PageTitle>Add Student</PageTitle>
-
 <section class="container-fluid">
-	<EditForm Model="newStudent">
-		<h1>Add Student</h1>
-		<div class="form-group">
-			<label for="lastname">Last Name</label>
-			<input type="text" id="lastname" class="form-control" placeholder="Last Name" @bind="newStudent.LastName" />
-		</div>
-		<div class="form-group">
-			<label for="firstname">First Name</label>
-			<input type="text" id="firstname" class="form-control" placeholder="First Name" @bind="newStudent.FirstName"/>
-		</div>
-		<div class="form-group">
-			<label for="studenttype">Student Type</label>
-			<select class="form-control" id="studenttype" @bind="newStudent.Type">
-				<option disabled selected value="">Select a Student Type</option>
-				@foreach(var type in StudentTypes){
-					<option value="@type">@type</option>
-				}
-
-			</select>
-		</div>
-		<div class="form-group mt-3">
-			<button type="button" class="btn btn-primary" @onclick="()=>OnSubmit()">Add Student</button>
-			<button type="button" @onclick="NavigateToStudents" class="btn btn-danger">Cancel</button>
-		</div>
-	</EditForm>
+<StudentForm NewStudent="newStudent" StudentTypes="StudentTypes" OnCancel="NavigateToStudents" OnSubmit="OnSubmit"></StudentForm>
 </section>
+
 @code {
 	Student newStudent = CreateStudent();
 	public List<string> StudentTypes = Helper.GetStudentTypes();
