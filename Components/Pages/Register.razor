@@ -3,20 +3,23 @@
 @using Registrar
 @inject NavigationManager Navigator
 
-<h3>Register Student</h3>
-
+<div class="w-100 border-bottom pb-2 mb-3 align-items-start">
+    <h2>Register Student</h2>
+</div>
 <section class="container-fluid">
     @if(redirectToStudents){
         Navigator.NavigateTo("/");
     }
         <EditForm Model="selectedStudent">
-            <h4>@selectedStudent?.FirstName @selectedStudent?.LastName - @selectedStudent?.Id</h4>
+            <div class="w-100 border-bottom pb-2 mb-3 align-items-start">
+            <h2>@selectedStudent?.FirstName @selectedStudent?.LastName - @selectedStudent?.Id</h2>
+            </div>
             <p>The following courses are currently available for registration:</p>
             @foreach(var course in courses){
                 <div class="form-group">
                     <label>
                         <InputCheckbox id="@course.Code" @bind-Value="course!.isEnrolled" class="form-check-input" />
-                        @course.Code @course.Title @course.WeeklyHours - hours per week
+                    @course.Code @course.Title ----- @course.WeeklyHours hours per week
                     </label>
                 </div>
             }

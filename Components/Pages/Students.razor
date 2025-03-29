@@ -4,9 +4,12 @@
 @inject NavigationManager Navigator
 <PageTitle>Students</PageTitle>
 <main class="m-5">
-	<header class="d-flex justify-content-between">
-		<h3>Students</h3>
-		<a @onclick="NavigateToAddStudent" class="align-content-end btn btn-primary rounded-1">+</a>
+	<header class="d-flex flex-column">
+		<div class="w-100 border-bottom pb-2 mb-3 align-items-start">
+			<h2>Student List</h2>
+		</div>
+
+		<a @onclick="NavigateToAddStudent" class="btn btn-primary rounded-1 align-self-end mw-100">+</a>
 	</header>
 
 	<section class="d-flex">
@@ -14,7 +17,7 @@
 		<table class="table table-hover align-content-center border-5">
 			<thead>
 				<tr class="student-table">
-					<th>id</th>
+					<th>ID</th>
 					<th>Last Name</th>
 					<th>First Name</th>
 					<th>Type</th>
@@ -29,7 +32,7 @@
 						<td>@student.LastName</td>
 						<td>@student.FirstName</td>
 						<td>@student.Type</td>
-						<td><button @onclick="()=>RegisterStudent(student.Id)" class="border-0 btn-primary color-white rounded-1">Register</button></td>
+						<td><button @onclick="()=>RegisterStudent(student.Id)" class="border-0 btn-primary color-white rounded-1 p-2">Register</button></td>
 					</tr>
 				}
 			</tbody>

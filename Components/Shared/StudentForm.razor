@@ -1,7 +1,8 @@
 ﻿@using Registrar
-<h3>StudentForm</h3>
 	<EditForm Model="NewStudent">
-		<h1>Add Student</h1>
+	<div class="w-100 border-bottom pb-2 mb-3 align-items-start">
+		<h2>Add Student</h2>
+	</div>
 		<div class="form-group">
 			<label for="firstname">First Name</label>
 			<input type="text" id="firstname" class="form-control" placeholder="First Name" @bind="NewStudent.FirstName" />
