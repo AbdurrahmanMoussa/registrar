@@ -70,73 +70,13 @@ public class Helper
   }
    public static List<Student> InitialStudents =
     [
-        new Student { Id = 1, FirstName = "Bob", LastName = "Builder", Type = GetStudentTypes()[1] },
-        new Student { Id = 2, FirstName = "Bob", LastName = "Builder", Type = GetStudentTypes()[2] },
-        new Student { Id = 3, FirstName = "Bob", LastName = "Builder", Type = GetStudentTypes()[2] },
-        new Student { Id = 4, FirstName = "Bob", LastName = "Builder", Type = GetStudentTypes()[2] },
-        new Student { Id = 5, FirstName = "Bob", LastName = "Builder", Type = GetStudentTypes()[1] },
-        new Student { Id = 6, FirstName = "Bob", LastName = "Builder", Type = GetStudentTypes()[2] }
+ new Student { Id = new Random().Next(1000, 9999), FirstName = "Alice", LastName = "Johnson", Type = GetStudentTypes()[1] },
+    new Student { Id = new Random().Next(1000, 9999), FirstName = "David", LastName = "Smith", Type = GetStudentTypes()[2] },
+    new Student { Id = new Random().Next(1000, 9999), FirstName = "Emma", LastName = "Brown", Type = GetStudentTypes()[2] },
+    new Student { Id = new Random().Next(1000, 9999), FirstName = "Michael", LastName = "Davis", Type = GetStudentTypes()[2] },
+    new Student { Id = new Random().Next(1000, 9999), FirstName = "Sophia", LastName = "Miller", Type = GetStudentTypes()[1] },
+    new Student { Id = new Random().Next(1000, 9999), FirstName = "James", LastName = "Wilson", Type = GetStudentTypes()[2] }
     ];
 
-    //public static List<Student> GetStudents()
-    //  {
-    //      List<Student> students = [];
 
-    //      Student student = new Student
-    //      {
-    //          Id = 1,
-    //          FirstName="Bob",
-    //          LastName="Builder",
-    //          Type = GetStudentTypes()[1],
-
-    //      };
-    //      students.Add(student);
-    //      student = new Student
-    //      {
-    //          Id = 2,
-    //          FirstName = "Bob",
-    //          LastName = "Builder",
-    //          Type = GetStudentTypes()[2],
-
-    //      };
-    //      students.Add(student);
-    //      student = new Student
-    //      {
-    //          Id = 3,
-    //          FirstName = "Bob",
-    //          LastName = "Builder",
-    //          Type = GetStudentTypes()[2],
-
-    //      };
-    //      students.Add(student);
-    //      student = new Student
-    //      {
-    //          Id = 4,
-    //          FirstName = "Bob",
-    //          LastName = "Builder",
-    //          Type = GetStudentTypes()[2],
-
-    //      };
-    //      students.Add(student);
-
-    //      student = new Student
-    //      {
-    //          Id = 5,
-    //          FirstName = "Bob",
-    //          LastName = "Builder",
-    //          Type = GetStudentTypes()[1],
-
-    //      };
-    //      students.Add(student);
-    //      student = new Student
-    //      {
-    //          Id = 6,
-    //          FirstName = "Bob",
-    //          LastName = "Builder",
-    //          Type = GetStudentTypes()[2],
-
-    //      };
-    //      students.Add(student);
-    //      return students;
-    //  }
 }

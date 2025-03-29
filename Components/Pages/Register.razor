@@ -10,7 +10,7 @@
         Navigator.NavigateTo("/");
     }
         <EditForm Model="selectedStudent">
-            <h4>@selectedStudent?.FirstName @selectedStudent?.Id</h4>
+            <h4>@selectedStudent?.FirstName @selectedStudent?.LastName @selectedStudent?.Id</h4>
             <p>The following courses are currently available for registration:</p>
             @foreach(var course in courses){
                 <div class="form-group">
