@@ -1,7 +1,9 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 @using Registrar
+@using Microsoft.EntityFrameworkCore
 @inject NavigationManager Navigator
+@inject Registrar.Data.RegistrarDbContext context
 <PageTitle>Students</PageTitle>
 <main class="m-5">
 	<header class="d-flex flex-column">
@@ -25,7 +27,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var student in students) 
+				@foreach (var student in context.Student) 
 				{
 					<tr>
 						<td>@student.Id</td>
@@ -41,7 +43,6 @@
 </main>
 @code {
 
-	List<Student> students = Helper.InitialStudents;
 
 	private void RegisterStudent(int studentId)
 	{

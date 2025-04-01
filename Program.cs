@@ -1,10 +1,18 @@
+using Microsoft.EntityFrameworkCore;
 using Registrar.Components;
+using Registrar.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<RegistrarDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 
 var app = builder.Build();
 
