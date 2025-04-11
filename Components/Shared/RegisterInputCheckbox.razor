@@ -1,0 +1,27 @@
+﻿@using Registrar
+@code {
+    [Parameter] public int CourseId { get; set; }
+    [Parameter] public string CourseName { get; set; } = string.Empty;
+    [Parameter] public bool IsEnrolled { get; set; }
+    [Parameter] public EventCallback<(int courseId, bool isEnrolled)> OnEnrollmentChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        IsEnrolled = IsEnrolled;
+    }
+    private bool IsEnrolledHelper
+    {
+        get => IsEnrolled;
+        set
+        {
+            IsEnrolled = value;
+            OnEnrollmentChanged.InvokeAsync((CourseId, IsEnrolled));
+        }
+    }
+}
+<div class="form-group">
+    <label>
+        <InputCheckbox @bind-Value="@IsEnrolledHelper" class="form-check-input" />
+        @CourseName
+    </label>
+</div>

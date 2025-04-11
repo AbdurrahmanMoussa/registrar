@@ -12,19 +12,26 @@
     @if(redirectToStudents){
         Navigator.NavigateTo("/");
     }
-    <EditForm Model="selectedStudent">
+    <EditForm Model="selectedStudent" OnSubmit="@OnSubmit">
         <div class="w-100 border-bottom pb-2 mb-3 align-items-start">
             <h2>@selectedStudent?.FirstName @selectedStudent?.LastName - @selectedStudent?.Id</h2>
         </div>
         <p>The following courses are currently available for registration:</p>
-        @foreach(var course in courses){
-            <div class="form-group">
-                <label>
-                    <InputCheckbox id="@course.Code" @bind-Value="isEnrolled"  class="form-check-input" />
-                    @course.Code @course.Title ----- @course.WeeklyHours hours per week
-                </label>
-            </div>
+
+        @if (isError)
+        {
+            <div class="alert alert-danger">@helperMsg</div>
+        }else if(isSubmit && !isError){
+            <div class="alert alert-info">@helperMsg</div>
         }
+        @foreach (var course in courses)
+        {
+            <RegisterInputCheckbox CourseId="@course.Id"
+            CourseName="@($"{course.Code} {course.Title} - {course.WeeklyHours} hrs/week")"
+            IsEnrolled="@enrolledCourseIds.Contains(course.Id)"
+            OnEnrollmentChanged="HandleEnrollmentChanged" />
+        }
+
         <div class="form-group my-3">
             <button type="submit" class="btn btn-success">Register Student</button>
             <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
@@ -34,26 +41,111 @@
 </section>
 
 @code {
-
-    [Parameter] public int Id { get; set; }
+    [Parameter] 
+    public int Id { get; set; }
     private Student? selectedStudent;
+    bool isEnrolled;
     private bool redirectToStudents = false;
-    public bool isEnrolled = false;
-    //finish this getter
-    public IEnumerable<Course> courses { get; set; } = new List<Course>();
-    protected override void OnInitialized(){
+    public List<Course> courses=new();
+    public List<Registration> registeredCourses = new();
+    public List <int> enrolledCourseIds { get; set; }=new();
+    public int totalRegisteredHours { get; set; } = 0;
+    public int numberOfCourses { get; set; } = 0;
+    public string helperMsg = String.Empty;
+    public bool isError;
+    public bool isSubmit = false;
+
+    protected override async Task OnInitializedAsync(){
         try
         {
-            selectedStudent = context.Student.First(s => s.Id == Id);
-            var courses = context.Course.ToList();
+            selectedStudent = await context.Student.FirstOrDefaultAsync(s => s.Id == Id);
+            courses = await context.Course.ToListAsync();
+
+            registeredCourses = await context.Registration.Where(r => r.StudentId == selectedStudent.Id).Include(r=>r.Course).ToListAsync();
+            enrolledCourseIds = registeredCourses.Select(r => r.CourseId).ToList();
+
         }catch(Exception){
+
             redirectToStudents = true;
         }
-
     }
-    //public List<Course> courses = Helper.GetCourses();
     private void Cancel()
     {
         Navigator.NavigateTo("/");
+    }
+
+    private void UpdateTotalRegisteredHoursAndCourses()
+    {
+        totalRegisteredHours = courses
+            .Where(course => enrolledCourseIds.Contains(course.Id)).Sum(course=>course.WeeklyHours);
+        numberOfCourses = courses.Where(course => enrolledCourseIds.Contains(course.Id)).Count();
+    }
+
+    private void HandleEnrollmentChanged((int courseId, bool isEnrolled) update)
+    {
+        if (update.isEnrolled)
+        {
+            if (!enrolledCourseIds.Contains(update.courseId)){
+                enrolledCourseIds.Add(update.courseId);
+            }        
+        }
+        else
+        {
+            enrolledCourseIds.Remove(update.courseId);
+        }
+        UpdateTotalRegisteredHoursAndCourses();
+    }
+    private async Task OnSubmit() {
+        isError = true;
+        isSubmit = true;
+
+        if (numberOfCourses<1)
+        {
+            isError = true;
+            helperMsg = "You must select at least 1 new course.";
+            return;
+        }
+        try {
+            if (selectedStudent?.Type == "Full Time" && totalRegisteredHours > 16)
+            {
+                helperMsg = "Full-Time students can only register for a maximum 16 hours per week.";
+            }
+            else if (selectedStudent?.Type == "Part Time" && numberOfCourses > 3)
+            {
+                helperMsg = "Part-Time students can only register for a maximum of 3 courses.";
+            }
+            else if (selectedStudent?.Type == "Coop" && numberOfCourses > 2 || selectedStudent?.Type == "Coop" && totalRegisteredHours > 4)
+            {
+                helperMsg = "Coop students can only register for a maximum of 2 courses and a maximum of 4 hours per week.";
+            }
+            else
+            {
+                isError = false;
+                foreach (var courseId in enrolledCourseIds)
+                {
+                    bool alreadyRegistered = registeredCourses.Any(r => r.CourseId == courseId);
+                    var coursesToRemove = registeredCourses.Where(r => !enrolledCourseIds.Contains(r.CourseId)).ToList();
+                    foreach (var registration in coursesToRemove)
+                    {
+                        context.Registration.Remove(registration);
+                    }
+                    if (!alreadyRegistered)
+                    {
+                        var registration = new Registration
+                            {
+                                StudentId = selectedStudent.Id,
+                                CourseId = courseId
+                            };
+                        context.Registration.Add(registration);
+                    }
+                }
+                await context.SaveChangesAsync();
+                helperMsg = $"The student has been registered for {numberOfCourses} course(s), {totalRegisteredHours} hours weekly.";
+            }
+        }
+        catch (Exception e)
+        {
+            helperMsg = e.Message;
+        }
     }
 }

@@ -13,7 +13,6 @@ builder.Services.AddDbContext<RegistrarDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

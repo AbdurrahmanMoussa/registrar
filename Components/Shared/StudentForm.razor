@@ -1,15 +1,18 @@
 ﻿@using Registrar
-	<EditForm Model="NewStudent">
+<EditForm Model="NewStudent" OnValidSubmit="OnSubmit">
+		<DataAnnotationsValidator />
 	<div class="w-100 border-bottom pb-2 mb-3 align-items-start">
 		<h2>Add Student</h2>
 	</div>
 		<div class="form-group">
 			<label for="firstname">First Name</label>
 			<input type="text" id="firstname" class="form-control" placeholder="First Name" @bind="NewStudent.FirstName" />
+			<ValidationMessage For="@(()=>NewStudent.FirstName)"/>
 		</div>
 		<div class="form-group">
 			<label for="lastname">Last Name</label>
 			<input type="text" id="lastname" class="form-control" placeholder="Last Name" @bind="NewStudent.LastName" />
+		<ValidationMessage For="@(()=>NewStudent.LastName)" />
 		</div>
 		<div class="form-group">
 			<label for="studenttype">Student Type</label>
@@ -19,11 +22,11 @@
 				{
 					<option value="@type">@type</option>
 				}
-
 			</select>
+		<ValidationMessage For="@(()=>NewStudent.Type)" />
 		</div>
 		<div class="form-group mt-3">
-			<button type="button" class="btn btn-primary" @onclick="@OnSubmit">Add Student</button>
+			<button type="submit" class="btn btn-primary">Add Student</button>
 			<button type="button" @onclick="@OnCancel" class="btn btn-danger">Cancel</button>
 		</div>
 	</EditForm>

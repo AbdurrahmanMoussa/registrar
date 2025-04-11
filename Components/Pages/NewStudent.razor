@@ -2,22 +2,23 @@
 @rendermode InteractiveServer
 @using Registrar
 @inject NavigationManager Navigator
+@inject Registrar.Data.RegistrarDbContext context;
 
 <PageTitle>Add Student</PageTitle>
 <section class="container-fluid">
-<StudentForm NewStudent="newStudent" StudentTypes="StudentTypes" OnCancel="NavigateToStudents" OnSubmit="OnSubmit"></StudentForm>
+	<StudentForm NewStudent="newStudent" StudentTypes="StudentTypes" OnCancel="NavigateToStudents" OnSubmit="OnSubmitAsync"></StudentForm>
 </section>
 
 @code {
-	Student newStudent = CreateStudent();
+	Student newStudent = new Student();
+
 	public List<string> StudentTypes = Helper.GetStudentTypes();
-	public static Student CreateStudent(){
-		return new Student { Id = new Random().Next(1000, 9999) };
-	}
-	public void OnSubmit(){
-		Helper.InitialStudents.Add(newStudent);
-		newStudent = CreateStudent();
-		Navigator.NavigateTo("/");
+
+	public async Task OnSubmitAsync(){
+		context.Student.Add(newStudent);
+		await context.SaveChangesAsync();
+		newStudent = new Student();
+		await InvokeAsync(() => Navigator.NavigateTo("/"));
 	}
 	public void NavigateToStudents()
 	{

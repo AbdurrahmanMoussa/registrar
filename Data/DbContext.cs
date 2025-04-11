@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Registrar.Models;
+using Registrar;
 
 
 namespace Registrar.Data
@@ -10,7 +10,7 @@ namespace Registrar.Data
 
         public DbSet<Student> Student { get; set; }
         public DbSet<Course> Course { get; set; }
-
+        public DbSet<Registration> Registration { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Registration>().HasKey(r => new
